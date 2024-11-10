@@ -1,0 +1,5 @@
+.timestamp, .timestampError {
+    font-size: 0.8em;
+    color: red; /* Text color as per Bootstrap's secondary color */
+    margin-left: 5px; /* Adjust spacing from the main text */
+}

@@ -1,0 +1,246 @@
+admission fees
+monthly fees
+joinning date
+end date
+
+=== staff ===
+joining date 
+salary
+timing
+
+users
+accounts
+
+staff income add
+	user_id
+	user_name
+	phone 
+	monthly date
+		dropdrown
+			monthly fees
+			registration fees
+	total fees
+	pay fees
+	remaining fees
+	
+
+add expense
+	id
+	expense name
+	category
+	amount
+	image
+
+Dashboard ky bad subscription menu lgao
+	subscription details
+	add subscription
+		id
+		name
+		futures details (dropdown)
+		amount
+		validation days
+	add futures
+			
+attendence
+	details
+	add
+		id
+		user_name
+		phone
+		role
+		date
+		status (dropdown)
+			present
+			absent
+			leave
+		
+		
+ 
+
+
+
+CREATE TABLE category (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(100) NULL,
+    status varchar(100) NOT NULL DEFAULT 'Active',
+    created_by VARCHAR(100) NULL,
+    created_date VARCHAR(100) NULL,
+    updated_by VARCHAR(100) NULL,
+    updated_date VARCHAR(100) NULL,
+    dlt_username varchar(100) NULL
+)
+
+
+CREATE TABLE fetures (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    feture_name VARCHAR(100) NOT NULL UNIQUE,
+    created_by VARCHAR(100) NULL,
+    created_date VARCHAR(100) NULL,
+    updated_by VARCHAR(100) NULL,
+    updated_date VARCHAR(100) NULL
+)
+
+
+CREATE TABLE expense (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    expense_name VARCHAR(100) NOT NULL,
+    category_id INT NOT NULL,
+    expense_amount VARCHAR(100) NOT NULL,
+    expense_image VARCHAR(100) NOT NULL,
+    created_by VARCHAR(100) NULL,
+    created_date VARCHAR(100) NULL,
+    updated_by VARCHAR(100) NULL,
+    updated_date VARCHAR(100) NULL,
+    FOREIGN KEY (category_id) REFERENCES category (id)
+)	
+
+
+CREATE TABLE subscription (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    subscrip_name VARCHAR(100) NOT NULL,
+    feture_details VARCHAR(100) NULL,
+    subscrip_amount VARCHAR(100) NULL,
+    validation_days VARCHAR(100) NULL,
+    created_by VARCHAR(100) NULL,
+    created_date VARCHAR(100) NULL,
+    updated_by VARCHAR(100) NULL,
+    updated_date VARCHAR(100) NULL
+)
+
+
+CREATE TABLE income (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    phone_no VARCHAR(100) NULL,
+    subscription VARCHAR(100) NULL,
+    amount VARCHAR(100) NULL,
+    monthly_date VARCHAR(100) NULL,
+    fees_type VARCHAR(100) NULL,
+    pay_fees VARCHAR(100) NULL,
+    remaining_fees VARCHAR(100) NULL,
+    remaining_fees_date VARCHAR(100) NULL,
+    created_by VARCHAR(100) NULL,
+    created_date VARCHAR(100) NULL,
+    updated_by VARCHAR(100) NULL,
+    updated_date VARCHAR(100) NULL
+)
+
+
+CREATE TABLE salary (
+    salary_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    salary_name VARCHAR(100) NOT NULL,
+    salary_phone VARCHAR(100) NULL,
+    salary_amount VARCHAR(100) NULL,
+    monthly_date VARCHAR(100) NULL,
+    pay_salary VARCHAR(100) NULL,
+    remaining_salary VARCHAR(100) NULL,
+    remaining_salary_date VARCHAR(100) NULL,
+    created_by VARCHAR(100) NULL,
+    created_date VARCHAR(100) NULL,
+    updated_by VARCHAR(100) NULL,
+    updated_date VARCHAR(100) NULL
+)
+
+CREATE TABLE attendence (
+    attend_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    attend_name VARCHAR(100) NOT NULL,
+    attend_phone VARCHAR(100) NULL,
+    attend_role VARCHAR(100) NULL,
+    attend_date VARCHAR(100) NULL,
+    attend_status VARCHAR(100) NULL,
+    created_by VARCHAR(100) NULL,
+    created_date VARCHAR(100) NULL,
+    updated_by VARCHAR(100) NULL,
+    updated_date VARCHAR(100) NULL
+)
+
+
+CREATE TABLE feture_details (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    subscrip_id INT NOT NULL,
+    feture_details VARCHAR(100) NULL,
+    FOREIGN KEY (subscrip_id) REFERENCES subscription (subscrip_id)
+)
+
+
+CREATE TABLE members_details (
+    user_id INT NOT NULL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NULL,
+    phone VARCHAR(15) NULL,
+    address VARCHAR(100) NULL,
+    gender  VARCHAR(10) NULL,
+    age INT NULL,
+    city VARCHAR(100) NULL,
+    country VARCHAR(100) NULL,
+    admission_fees INT NULL,
+	monthly_fees INT NULL,
+	joinning_date VARCHAR(100),
+	end_date VARCHAR(100),
+    login_time VARCHAR(100) NULL,
+    logout_time VARCHAR(100) NULL,
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+)
+
+
+SELECT subscription.id, subscription.subscrip_name, fetures.feture_name, subscription.subscrip_amount, subscription.validation_days,
+subscription.created_by, subscription.created_date, subscription.updated_by, subscription.updated_date FROM `subscription`
+LEFT JOIN fetures ON fetures.id = subscription.feture_id
+
+
+
+
+
+
+
+
+
+
+<?php
+
+include_once('../includes/config.php');
+
+$dataLimited = $_POST['dataLimited'];
+
+if ($dataLimited != '-------') {
+    $count = $dataLimited;
+} else {
+    $count = 0;
+}
+
+$sql = "SELECT * FROM `fetures` LIMIT $count";
+$result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    $no = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $get_feture_id = $row['id'];
+        $get_feture_name = $row['feture_name'];
+        echo '<tr>
+        <td>' . $no++ . '</td>
+        <td>' . $get_feture_name . '</td>
+        <td>
+            <a href="fetures.php?edit_feture_id=' . $get_feture_id . '" class="btn btn-primary btn-sm">Edit</a>
+            <a href="all-db-code.php?delete_feture_id=' . $get_feture_id . '" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+    </tr>';
+    }
+}
+
+ALTER TABLE users_detail
+ADD end_timing varchar(100) AFTER start_timing
+
+
+SELECT users.user_id, users.username, users.email, users.password, users.created_date,
+users_detail.users_detail_id, users_detail.full_name, users_detail.Phone, users_detail.address, users_detail.gender, users_detail.age, users_detail.city, users_detail.country, users_detail.image, users_detail.admission_fees, users_detail.joining_date, users_detail.end_date,  
+membership.membership_id, membership.membership_name, membership.membership_amount,
+role.role_id, role.name
+FROM users 
+INNER JOIN users_detail ON users_detail.users_detail_id = users.users_detail_id 
+LEFT JOIN role ON role.role_id = users.role_id 
+LEFT JOIN membership ON membership.membership_id = users_detail.membership_id
+WHERE users.user_id = '3';
+
+
+
+
